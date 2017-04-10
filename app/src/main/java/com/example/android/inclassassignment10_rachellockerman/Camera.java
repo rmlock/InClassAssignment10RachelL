@@ -180,6 +180,7 @@ public class Camera extends AppCompatActivity {
                             // Handle unsuccessful uploads
                             // ...
                         }
+
                     });
 
         } else {
