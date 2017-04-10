@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "169765627414",
+    "firebase_url": "https://inclassassignment10-rachellock.firebaseio.com",
+    "project_id": "inclassassignment10-rachellock",
+    "storage_bucket": "inclassassignment10-rachellock.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169765627414:android:0d0f14f594bf78d5",
+        "android_client_info": {
+          "package_name": "com.example.android.inclassassignment10_rachellockerman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169765627414-mebpdc8uiouq82fur945j286vsoa0c8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.inclassassignment10_rachellockerman",
+            "certificate_hash": "231fcdd460cd680c3ca3633630dcc7890e302a8c"
+          }
+        },
+        {
+          "client_id": "169765627414-m1ulah252l8875chpp0t6o4m5mgncgfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZWtCjuVT3anYpGF5jpXacKKyGlfDAIyI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169765627414-m1ulah252l8875chpp0t6o4m5mgncgfk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
