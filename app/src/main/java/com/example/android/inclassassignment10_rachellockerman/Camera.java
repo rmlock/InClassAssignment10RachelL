@@ -151,24 +151,10 @@ public class Camera extends AppCompatActivity {
     }
 
 
-    public void downloadFile(View view) {
-
-        // Create a storage reference from our app
-
-// Create a reference to "mountains.jpg"
-        StorageReference pictures = storageRef.child("picture.jpg");
-
-// Create a reference to 'images/mountains.jpg'
-        StorageReference pictureRef = storageRef.child("images/picture.jpg");
-
-// While the file names are the same, the references point to different files
-        pictures.getName().equals(pictureRef.getName());    // true
-        pictures.getPath().equals(pictureRef.getPath());    // false
-    }
 
 
     public void uploadFile(View view) {
-        if (!pictureSelected) {
+        if (pictureSelected) {
 
             StorageReference imageFile = storageRef.child(UUID.randomUUID().toString());
             imageView.setDrawingCacheEnabled(true);
