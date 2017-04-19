@@ -2,7 +2,11 @@ package com.example.android.inclassassignment10_rachellockerman;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -20,6 +24,10 @@ public class List extends AppCompatActivity {
     DatabaseReference users;
     ArrayList<User> userArrayList;
     String TAG = "List";
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,25 +36,32 @@ public class List extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         users = database.getReference("users");
         userArrayList= new ArrayList<>();
-        display = (TextView) findViewById(R.id.displayUsers);
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(userArrayList);
+        mRecyclerView.setAdapter(mAdapter);
 
         users.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
                 userArrayList.add(user);
-
-                String results = "";
-                for (User u : userArrayList){
-                    results+=u+"\n"+"\n";
-                }
-                display.setVisibility(View.VISIBLE);
-                display.setText(results);
+                mAdapter.notifyDataSetChanged();
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
 
             }
 
@@ -69,4 +84,23 @@ public class List extends AppCompatActivity {
 
 
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        return true;
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.ShowMore:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

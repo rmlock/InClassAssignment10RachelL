@@ -16,17 +16,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,6 +34,9 @@ public class Camera extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef;
     boolean pictureSelected = false;
+    FirebaseDatabase database;
+    StorageReference pictureID;
+
 
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -49,7 +52,7 @@ public class Camera extends AppCompatActivity {
         storageRef = storage.getReference();
         setContentView(R.layout.activity_camera);
         imageView = (ImageView) findViewById(R.id.picture);
-
+        database = FirebaseDatabase.getInstance();
 
     }
 
@@ -116,12 +119,15 @@ public class Camera extends AppCompatActivity {
 
             }
         } else if (requestCode == REQUEST_PICK_PHOTO) {
-            try {
-                decodeUri(data.getData());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                decodeUri(data.getData());
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+            Picasso.with(this).load(data.getData()).into(imageView);
+
         }
+
     }
 
     public void decodeUri(Uri uri) throws FileNotFoundException {
@@ -156,7 +162,8 @@ public class Camera extends AppCompatActivity {
     public void uploadFile(View view) {
         if (pictureSelected) {
 
-            StorageReference imageFile = storageRef.child(UUID.randomUUID().toString());
+            String randomName = UUID.randomUUID().toString();
+            final StorageReference imageFile = storageRef.child(randomName);
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
             Bitmap bitmap = imageView.getDrawingCache();
@@ -164,6 +171,7 @@ public class Camera extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
 
+            database.getReference("upload").setValue(randomName);
 
             imageFile.putBytes(data)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -182,6 +190,9 @@ public class Camera extends AppCompatActivity {
                         }
 
                     });
+            imageView.setImageDrawable(null);
+            pictureSelected=false;
+
 
         } else {
             Toast.makeText(this, "No Picture Found!", Toast.LENGTH_SHORT).show();
